@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  web:
+    build: frontend # this is where we have a frontend docker file.
+    ports:
+      - 3000:3000
+  api:
+    build: backend # this is where we have a frontend docker file.
+    ports:
+      - 3001:3001
+    volumes:
+      - ./backend:/app
+    environment:
+      DB_URL: mongodb://db/docker-react-node
+    command: ./docker-entrypoint.sh # this will override the CMD ["npm", "start"] in Dockerfile
+  db:
+    image: mongo:4.0-xenial
+    ports:
+      - 27017:27017
+    volumes:
+      - docker-react-node:/data/db
+
+volumes:
+  docker-react-node:
